@@ -1,0 +1,126 @@
+{
+  "info": {
+    "_postman_id": "70e380d1-ffcc-43b7-af83-9525a0cd6420",
+    "name": "lattice_event_booking_system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40778073"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "getUserBookings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost:3000}}{{api/v1}}/users/:id/bookings",
+              "host": ["{{localhost:3000}}{{api/v1}}"],
+              "path": ["users", ":id", "bookings"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "events",
+      "item": [
+        {
+          "name": "createEvent",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Event-3\",\n    \"description\": \"Desc of Event-3\",\n    \"date\": \"1998-01-01\",\n    \"time\": \"14:00\",\n    \"totalCapacity\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost:3000}}{{api/v1}}/events",
+              "host": ["{{localhost:3000}}{{api/v1}}"],
+              "path": ["events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllEvents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost:3000}}{{api/v1}}/events",
+              "host": ["{{localhost:3000}}{{api/v1}}"],
+              "path": ["events"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getEventAttendance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost:3000}}{{api/v1}}/events/:id/attendance?bookingCode=7381FFEA0C72-1774273140719",
+              "host": ["{{localhost:3000}}{{api/v1}}"],
+              "path": ["events", ":id", "attendance"],
+              "query": [
+                {
+                  "key": "bookingCode",
+                  "value": "7381FFEA0C72-1774273140719"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "bookings",
+      "item": [
+        {
+          "name": "createBooking",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userId\": 1,\n    \"eventId\": 3,\n    \"ticketsCount\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost:3000}}{{api/v1}}/bookings",
+              "host": ["{{localhost:3000}}{{api/v1}}"],
+              "path": ["bookings"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
