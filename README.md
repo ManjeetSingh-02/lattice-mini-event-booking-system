@@ -35,11 +35,11 @@ COOKIE_SECRET=minimum_of_32_char_cookie_secret
 
 5. Run the database migrations
 
-5.1 For development mode
+- For development mode
 ```bash
 pnpm prisma migrate dev --name init
 ```
-5.2 For production mode
+- For production mode
 ```bash
 pnpm prisma migrate deploy
 ```
@@ -51,15 +51,15 @@ pnpm prisma generate
 
 7. Run the application
 
-7.1 For running the application in development mode
+- For running the application in development mode
 ```bash
 pnpm dev
 ```
-7.2 For building the application in production mode
+- For building the application in production mode
 ```bash
 pnpm build
 ```
-7.3 For running the application in production mode
+- For running the application in production mode
 ```bash
 pnpm start
 ```
