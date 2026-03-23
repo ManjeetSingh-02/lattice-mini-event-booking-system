@@ -1,0 +1,103 @@
+openapi: 3.0.3
+info:
+  title: Lattice Event Booking System API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+paths:
+  /users/{id}/bookings:
+    get:
+      summary: Get user bookings
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of bookings
+
+  /events:
+    post:
+      summary: Create event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - description
+                - date
+                - time
+                - totalCapacity
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                time:
+                  type: string
+                  example: '14:00'
+                totalCapacity:
+                  type: integer
+      responses:
+        '201':
+          description: Event created
+
+    get:
+      summary: Get all events
+      responses:
+        '200':
+          description: List of events
+
+  /events/{id}/attendance:
+    get:
+      summary: Get event attendance by booking code
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: bookingCode
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Attendance details
+
+  /bookings:
+    post:
+      summary: Create booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - eventId
+                - ticketsCount
+              properties:
+                userId:
+                  type: integer
+                eventId:
+                  type: integer
+                ticketsCount:
+                  type: integer
+      responses:
+        '201':
+          description: Booking created
+
+components: {}
