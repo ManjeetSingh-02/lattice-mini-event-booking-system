@@ -9,7 +9,6 @@ export const APP_CONFIG = {
   // all module related constants
   MODULE_CONFIG: {
     DIR_NAME: 'modules',
-    FILE_NAME: 'module.ts',
     CURRENT_VERSION: 'v1',
   },
 
