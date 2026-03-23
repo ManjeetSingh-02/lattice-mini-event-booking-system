@@ -25,10 +25,10 @@ export default function (schema: ZodObject) {
         })
       );
 
-    // replace request data with the validated data
-    request.body = result.data.body as typeof request.body;
-    request.query = result.data.query as typeof request.query;
-    request.params = result.data.params as typeof request.params;
+    // replace request data with the validated data, if available
+    if (result.data.body) Object.assign(request.body, result.data.body);
+    if (result.data.query) Object.assign(request.query, result.data.query);
+    if (result.data.params) Object.assign(request.params, result.data.params);
 
     // forward request to next middleware
     nextFunction();
