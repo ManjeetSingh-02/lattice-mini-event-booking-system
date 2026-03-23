@@ -8,10 +8,7 @@ import type { Request, Response } from 'express';
 // controller for module
 export const controller = {
   // @controller POST /
-  createEvent: async (
-    request: Request,
-    response: Response<ISuccessResponse<object> | IErrorResponse<null>>
-  ) => {
+  createEvent: async (request: Request, response: Response<ISuccessResponse<object>>) => {
     // create a new event in db
     const newEvent = await prisma.event.create({
       data: {
@@ -22,16 +19,6 @@ export const controller = {
         remainingTickets: request.body.totalCapacity,
       },
     });
-
-    // if event creation fails, send ErrorResponse
-    if (!newEvent)
-      return response.status(500).json(
-        new ErrorResponse({
-          message: 'Something went wrong while creating the event',
-          code: 'EVENT_CREATION_FAILED',
-          issues: null,
-        })
-      );
 
     // send SuccessResponse with created event details
     return response.status(201).json(
@@ -61,31 +48,27 @@ export const controller = {
     request: Request,
     response: Response<ISuccessResponse<object> | IErrorResponse<null>>
   ) => {
-    // fetch event attendance details from db
-    const existingEvent = await prisma.event.findUnique({
-      where: { id: Number(request.params.id) },
-      select: { totalCapacity: true, remainingTickets: true },
+    // fetch booking details of the event and bookingCode from db
+    const existingBooking = await prisma.booking.findUnique({
+      where: { eventId: Number(request.params.id), bookingCode: request.body.bookingCode },
+      select: { ticketsCount: true },
     });
 
-    // if event not found, send ErrorResponse
-    if (!existingEvent)
+    // if booking not found, send ErrorResponse
+    if (!existingBooking)
       return response.status(404).json(
         new ErrorResponse<null>({
-          message: 'Event not found',
-          code: 'EVENT_NOT_FOUND',
+          message: 'Booking not found for the provided eventId and bookingCode',
+          code: 'BOOKING_NOT_FOUND',
           issues: null,
         })
       );
 
-    // send SuccessResponse with event attendance details
+    // send SuccessResponse with booking ticketsCount
     return response.status(200).json(
-      new SuccessResponse({
-        message: 'Event attendance retrieved successfully',
-        data: {
-          totalTickets: existingEvent.totalCapacity,
-          bookedTickets: existingEvent.totalCapacity - existingEvent.remainingTickets,
-          remainingTickets: existingEvent.remainingTickets,
-        },
+      new SuccessResponse<object>({
+        message: 'Number of tickets booked retrieved successfully',
+        data: { ticketsBooked: existingBooking.ticketsCount },
       })
     );
   },
