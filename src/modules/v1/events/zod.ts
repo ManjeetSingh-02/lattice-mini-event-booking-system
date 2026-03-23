@@ -28,7 +28,7 @@ export const getEventAttendanceSchema = z.object({
     id: z.coerce.number().int().positive(),
   }),
 
-  body: z.object({
+  query: z.object({
     bookingCode: z.string().trim().nonempty({ error: 'bookingCode is required' }),
   }),
 });
