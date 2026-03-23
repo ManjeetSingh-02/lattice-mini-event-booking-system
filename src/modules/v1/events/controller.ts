@@ -50,7 +50,7 @@ export const controller = {
   ) => {
     // fetch booking details of the event and bookingCode from db
     const existingBooking = await prisma.booking.findUnique({
-      where: { eventId: Number(request.params.id), bookingCode: request.body.bookingCode },
+      where: { eventId: Number(request.params.id), bookingCode: String(request.query.bookingCode) },
       select: { ticketsCount: true },
     });
 
