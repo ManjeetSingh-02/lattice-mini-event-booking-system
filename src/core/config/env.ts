@@ -10,6 +10,11 @@ const envSchema = z.object({
   ORIGIN_URL: z.url({ error: 'ORIGIN_URL must be a valid URL' }),
   PORT: z.coerce.number().int().positive(),
   DATABASE_URL: z.url({ error: 'DATABASE_URL must be a valid URL' }),
+  DATABASE_USER: z.string().min(1, { error: 'DATABASE_USER is required' }),
+  DATABASE_PASSWORD: z.string().min(1, { error: 'DATABASE_PASSWORD is required' }),
+  DATABASE_NAME: z.string().min(1, { error: 'DATABASE_NAME is required' }),
+  DATABASE_HOST: z.string().min(1, { error: 'DATABASE_HOST is required' }),
+  DATABASE_PORT: z.coerce.number().int().positive(),
   NODE_ENV: z.enum(Object.values(APP_CONFIG.NODE_ENVS)),
   COOKIE_SECRET: z.string().min(32, { error: 'COOKIE_SECRET must be 32 chars' }),
 });
