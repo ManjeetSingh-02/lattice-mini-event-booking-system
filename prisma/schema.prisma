@@ -17,8 +17,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  bookings         Booking[]
-  eventAttendances EventAttendance[]
+  bookings Booking[]
 }
 
 // event model
@@ -32,35 +31,19 @@ model Event {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  bookings         Booking[]
-  eventAttendances EventAttendance[]
+  bookings Booking[]
 }
 
 // booking model
 model Booking {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  eventId     Int
-  bookingDate DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, eventId])
-  @@index([userId])
-  @@index([eventId])
-}
-
-// event attendance model
-model EventAttendance {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  eventId   Int
-  entryTime DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  eventId      Int
+  ticketsCount Int
+  bookingCode  String   @unique
+  bookingDate  DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
