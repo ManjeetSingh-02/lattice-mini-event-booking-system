@@ -1,28 +1,33 @@
 // internal-imports
 import { APP_CONFIG } from '../config/constants.js';
+import { env } from '../config/env.js';
 import { logger } from '../logger/winston.js';
 
 // external-imports
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 // type-imports
 import type { Application } from 'express';
 
 // function to initialize all modules
 export default async function (application: Application) {
-  // get the directory name with the current version
-  const modulesVersionedDirPath = path.join(
+  // get the modules directory path
+  const completeModulesDirPath = path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    '../..',
     APP_CONFIG.MODULE_CONFIG.DIR_NAME,
     APP_CONFIG.MODULE_CONFIG.CURRENT_VERSION
   );
 
-  // get the modules directory path
-  const completeModulesDirPath = path.join(process.cwd(), 'src', modulesVersionedDirPath);
+  // get the file name as per environment variable
+  const MODULE_FILE_NAME =
+    env.NODE_ENV === APP_CONFIG.NODE_ENVS.DEVELOPMENT ? 'module.ts' : 'module.js';
 
   // if the modules directory doesn't exist, log a warning and return
   if (!fs.existsSync(completeModulesDirPath)) {
-    logger.warn(`(${modulesVersionedDirPath}) doesn't exist`);
+    logger.warn(`(${completeModulesDirPath}) doesn't exist`);
     return;
   }
 
@@ -31,7 +36,7 @@ export default async function (application: Application) {
 
   // if no modules found, log a warning and return
   if (moduleDirs.length === 0) {
-    logger.warn(`(${modulesVersionedDirPath}) has no modules`);
+    logger.warn(`(${completeModulesDirPath}) has no modules`);
     return;
   }
 
@@ -44,11 +49,11 @@ export default async function (application: Application) {
     if (!fs.statSync(moduleDirPath).isDirectory() || moduleDir.startsWith('_')) continue;
 
     // get the path for the module file
-    const moduleFilePath = path.join(moduleDirPath, APP_CONFIG.MODULE_CONFIG.FILE_NAME);
+    const moduleFilePath = path.join(moduleDirPath, MODULE_FILE_NAME);
 
     // check if the module file exists, if not log a warning and continue
     if (!fs.existsSync(moduleFilePath)) {
-      logger.warn(`(${moduleDir}/${APP_CONFIG.MODULE_CONFIG.FILE_NAME}) doesn't exist`);
+      logger.warn(`(${moduleDir}/${MODULE_FILE_NAME}) doesn't exist`);
       continue;
     }
 
@@ -57,7 +62,7 @@ export default async function (application: Application) {
 
     // if module doesn't have a default export, log a warning and continue
     if (!module.default) {
-      logger.warn(`(${moduleDir}/${APP_CONFIG.MODULE_CONFIG.FILE_NAME}) has no default export`);
+      logger.warn(`(${moduleDir}/${MODULE_FILE_NAME}) has no default export`);
       continue;
     }
 
